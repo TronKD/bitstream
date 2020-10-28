@@ -3,62 +3,78 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <bitset>
 
 using namespace std;
 
+string dec2bin(int dziesietna) {
+        int d;
+        string znak;
+        if(dziesietna > 0) {
+                d = dziesietna;
+                znak = "";
+        } else {
+                d = dziesietna * -1; 
+                znak = "-";
+        }     
+        string binary = bitset<8>(d).to_string();      
+        binary.erase(0, min(binary.find_first_not_of('0'), binary.size()-1));   
+        binary = znak + binary; 
+        return binary;
+}
+
 long minimumZPliku(string nazwaPliku, int system)
 {
-	long min;
-	ifstream plik;
-	string liczba1, liczba2;
-	long liczba;
-  
-	char* endptr;
-	bool pierwszy=true;
-	plik.open(nazwaPliku.c_str());
-   if(plik.good())
-     while(!plik.eof())
-     {
-               plik>>liczba1 >> liczba2;
+        ifstream file;
+        file.open(nazwaPliku);
+        string liczba1, liczba2;
+        bool pierwszy = true;
+        long liczba, min;
+        char* endptr;
+       
+        if(file.good()) { 
+          while(!file.eof()) 
+          {
+               file>>liczba1 >> liczba2; 
                liczba =  strtol(liczba2.c_str(), &endptr, system);
-               cout<< liczba1;
-               if(pierwszy)
+               
+               if(pierwszy) 
                {
-                            min = liczba;
-                            pierwszy = false;
+                    min = liczba;
+                    pierwszy = false;
                }
-               else
-                  if(liczba < min)
-                       min = liczba;
-     }
-	return min;
-}   
-	long wynik;
-	long liczba1=-128;
-	bool minus = false; 
-		if (liczba <0)
-		{
-   			minus = true;
-   			liczba1 *= -1;
+               else 
+                  if(liczba < min) 
+                       min = liczba; 
+           }
+        }
+  return min;
+}
 
-		}
-	string binary = bitset<16>(liczba1).to_string(); 
-	binary.erase(0, binary.find_first_not_of('0')); 
-
-	string dec2bin(liczba1){"dane_systemy1.txt", "dane_systemy2.txt", "dane_systemy3.txt"}; 
-	strining wynik = wynik + "-";
-	return wynik;  
-
-int main()
+int main(int argc, char** argv)
 {
-	ofstream plikOut;
-	plikOut.open("wyjscie.txt");
-	long min1 = minimumZPliku("dane_systemy1.txt", 2);
-	long min2 = minimumZPliku("dane_systemy3.txt", 8); 
-	long min3 = minimumZPliku("dane_systemy2.txt", 4);
-	plikOut << "Plik pierwszy min:" << dec2bin(min1)<<"\n";
-    plikOut << "Plik drugi min:" << dec2bin(min2) <<"\n";
-	plikOut << "Plik trzeci min:" << dec2bin(min3) <<"\n";
-    plikOut.close();
+ ofstream fileOut;
+ fileOut.open("wyjscie.txt");
+ int min1 = minimumZPliku("dane_systemy1.txt", 2);    
+ int min2 = minimumZPliku("dane_systemy2.txt", 4);
+ int min3 = minimumZPliku("dane_systemy3.txt", 8);
+ 
+ string bin_min1 = dec2bin(min1);
+ string bin_min2 = dec2bin(min2);
+ string bin_min3 = dec2bin(min3);
+ 
+ cout<<min1<<" "
+     <<min2<<" "
+     <<min3<<endl
+     <<bin_min1<<" "
+     <<bin_min2<<" "
+     <<bin_min3<<endl;
+     
+ fileOut<< "Stacja 1: " << bin_min1 <<endl
+        << "Stacja 2: "<<bin_min2<<endl
+        <<"Stacja 3: "<<bin_min3<<endl;
+
+ fileOut.close();
+ return 0;
 }

@@ -1,0 +1,64 @@
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <bitset>
+
+using namespace std;
+
+long minimumZPliku(string nazwaPliku, int system)
+{
+	long min;
+	ifstream plik;
+	string liczba1, liczba2;
+	long liczba;
+  
+	char* endptr;
+	bool pierwszy=true;
+	plik.open(nazwaPliku.c_str());
+   if(plik.good())
+     while(!plik.eof())
+     {
+               plik>>liczba1 >> liczba2;
+               liczba =  strtol(liczba2.c_str(), &endptr, system);
+               cout<< liczba1;
+               if(pierwszy)
+               {
+                            min = liczba;
+                            pierwszy = false;
+               }
+               else
+                  if(liczba < min)
+                       min = liczba;
+     }
+	return min;
+}   
+	long wynik;
+	long liczba1=-128;
+	bool minus = false; 
+		if (liczba <0)
+		{
+   			minus = true;
+   			liczba1 *= -1;
+
+		}
+	string binary = bitset<16>(liczba1).to_string(); 
+	binary.erase(0, binary.find_first_not_of('0')); 
+
+	string dec2bin(liczba1){"dane_systemy1.txt", "dane_systemy2.txt", "dane_systemy3.txt"}; 
+	strining wynik = wynik + "-";
+	return wynik;  
+
+int main()
+{
+	ofstream plikOut;
+	plikOut.open("wyjscie.txt");
+	long min1 = minimumZPliku("dane_systemy1.txt", 2);
+	long min2 = minimumZPliku("dane_systemy3.txt", 8); 
+	long min3 = minimumZPliku("dane_systemy2.txt", 4);
+	plikOut << "Plik pierwszy min:" << dec2bin(min1)<<"\n";
+    plikOut << "Plik drugi min:" << dec2bin(min2) <<"\n";
+	plikOut << "Plik trzeci min:" << dec2bin(min3) <<"\n";
+    plikOut.close();
+}
